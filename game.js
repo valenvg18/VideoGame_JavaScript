@@ -31,13 +31,17 @@ function startGame() {
     game.font = elementSize + 'px Verdana';
     game.textAlign = 'end';
 
-    
+    const map = maps[1];
+    //crear un arreglo para cada vez que se encuentre un salto de linea
+    const mapRows = map.trim().split('\n');
+    const mapColumns = mapRows.map(row => row.trim().split(''));
+    console.log({map, mapRows, mapColumns});
 
     //ARRAYS MULTIDIMENSIONALES
     for (let row = 1; row <= 10; row++) {
-        console.log(row);
         for (let col = 1; col <= 10; col++) {
-            game.fillText(emojis['X'], elementSize * col, elementSize * row);
+            game.fillText(emojis[mapColumns[row - 1][col - 1]], elementSize * col, elementSize * row);
+            // game.fillText(emojis['X'], elementSize * col, elementSize * row);
 
             // game.fillText(emojis['X'], elementSize, elementSize * i);
         }
