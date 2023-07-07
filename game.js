@@ -31,14 +31,28 @@ function startGame() {
     game.font = elementSize + 'px Verdana';
     game.textAlign = 'end';
 
-    const map = maps[1];
+    //Niveles
+    const map = maps[0];
     //crear un arreglo para cada vez que se encuentre un salto de linea
+    //Arreglo de filas a partir de un string
     const mapRows = map.trim().split('\n');
+    //Array bidimensional, cada fila sea un arreglo de cada columna
     const mapColumns = mapRows.map(row => row.trim().split(''));
     console.log({map, mapRows, mapColumns});
 
+    //RECORRER ARRAY BIDIMENSIONAL
+    mapColumns.forEach((row, rowI) => {
+        row.forEach((col, colI) => {
+            const emoji = emojis[col]
+            const posX = elementSize * (colI + 1);
+            const posY = elementSize * (rowI + 1);
+            game.fillText(emoji, posX, posY)
+            // console.log({ row, rowI, col, colI});
+        })
+    });
+
     //ARRAYS MULTIDIMENSIONALES
-    for (let row = 1; row <= 10; row++) {
+    /* for (let row = 1; row <= 10; row++) {
         for (let col = 1; col <= 10; col++) {
             game.fillText(emojis[mapColumns[row - 1][col - 1]], elementSize * col, elementSize * row);
             // game.fillText(emojis['X'], elementSize * col, elementSize * row);
@@ -46,7 +60,7 @@ function startGame() {
             // game.fillText(emojis['X'], elementSize, elementSize * i);
         }
         
-    }
+    } */
     
 
 
