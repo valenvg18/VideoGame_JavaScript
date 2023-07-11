@@ -114,28 +114,46 @@ function moveByKeys(event) {
 
 function moveUp() {
     console.log('Me quiero mover hacia arriba');
-    //Si miramos en la consola vemos que si "se mueve", ya que si llamamos a playerPosition, cambia su posicion en y
-    playerPosition.y -= elementSize;
-    // Hay que volver a renderizar todo el juego
-    startGame();
+
+    if ((playerPosition.y - elementSize) < elementSize) {
+        console.log('OUT');
+    }else {
+        //Si miramos en la consola vemos que si "se mueve", ya que si llamamos a playerPosition, cambia su posicion en y
+        playerPosition.y -= elementSize;
+        // Hay que volver a renderizar todo el juego
+        startGame();
+    }
 }
 
 function moveLeft() {
     console.log('Me quiero mover hacia la izquierda');
-    playerPosition.x -= elementSize;
-    startGame();
+    //Ahora para que el jugador no se salga del canvas, debemos hacer un condicional
+    if ((playerPosition.x - elementSize) < elementSize) {
+        console.log('OUT');
+    } else {
+        playerPosition.x -= elementSize;
+        startGame();
+    } 
 }
 
 function moveRight() {
     console.log('Me quiero mover hacia la derecha');
-    playerPosition.x += elementSize;
-    startGame();
+    if ((playerPosition.x + elementSize) > canvasSize) {
+        console.log('OUT');
+    } else {
+        playerPosition.x += elementSize;
+        startGame();
+    } 
 }
 
 function moveDown() {
     console.log('Me quiero mover hacia abajo');
-    playerPosition.y += elementSize;
-    startGame();
+    if ((playerPosition.y + elementSize) > canvasSize) {
+        console.log('OUT');
+    } else {
+        playerPosition.y += elementSize;
+        startGame();
+    } 
 }
 
 
