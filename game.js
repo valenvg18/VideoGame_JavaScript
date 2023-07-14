@@ -8,6 +8,7 @@ const btnDown = document.querySelector('#down');
 let canvasSize;
 let elementSize;
 let level = 0;
+let lives = 3;
 
 const playerPosition = {
     x: undefined,
@@ -145,6 +146,15 @@ function levelWin() {
 
 function levelFail() {
     console.log('Chocaste con un elemento :(');
+    lives--;
+
+    console.log(lives);
+
+    if (lives <= 0) {
+        level = 0;
+        lives = 3;
+    };
+
     playerPosition.x = undefined;
     playerPosition.y = undefined;
     startGame();
