@@ -11,7 +11,14 @@ let elementSize;
 const playerPosition = {
     x: undefined,
     y: undefined,
-}
+};
+
+const giftPosition = {
+    x: undefined,
+    y: undefined,
+};
+
+let enemyPositions = [];
 
 window.addEventListener('load', setCanvasSize);
 //CANVAS RESPONSIVE
@@ -53,6 +60,8 @@ function startGame() {
     //Debemos borrar todo antes de renderizar todo el juego y los movimientos del jugador, ya que con canvas no hay otra forma
     game.clearRect(0, 0, canvasSize, canvasSize);
 
+    enemyPositions = [];
+
     //RECORRER ARRAY BIDIMENSIONAL
     mapColumns.forEach((row, rowI) => {
         row.forEach((col, colI) => {
@@ -71,6 +80,14 @@ function startGame() {
                 playerPosition.y = posY;
                 console.log({playerPosition});
                 }
+            } else if (col == 'I') {
+                giftPosition.x = posX;
+                giftPosition.y = posY;
+            } else if (col == 'X') {
+                enemyPositions.push({
+                    x: posX,
+                    y: posY,
+                });
             }
 
             game.fillText(emoji, posX, posY)
@@ -87,6 +104,25 @@ function startGame() {
 }
 
 function movePlayer() {
+    const giftColisionX = playerPosition.x == giftPosition.x;
+    const giftColisionY = playerPosition.y == giftPosition.y;
+    //Si hubo colision significa que ambas variables, o sea giftColision en X y Y, son true.
+    const giftColision = giftColisionX  && giftColisionY;
+
+    if (giftColision) {
+        console.log('Subiste de nivel!');
+    };
+
+    const enemyColision = enemyPositions.find(enemy => {
+        const enemyColisionX = enemy.x.toFixed(3) == playerPosition.x.toFixed(3);
+        const enemyColisionY = enemy.y.toFixed(3) == playerPosition.y.toFixed(3);
+        return enemyColisionX && enemyColisionY;
+    });
+
+    if (enemyColision) {
+        console.log('Chocaste con un elemento :(');
+    };
+
     game.fillText(emojis['PLAYER'], playerPosition.x, playerPosition.y);
 }
 
