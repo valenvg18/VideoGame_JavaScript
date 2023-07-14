@@ -130,7 +130,8 @@ function movePlayer() {
     });
 
     if (enemyColision) {
-        console.log('Chocaste con un elemento :(');
+        // console.log('Chocaste con un elemento :(');
+        levelFail();
     };
 
     game.fillText(emojis['PLAYER'], playerPosition.x, playerPosition.y);
@@ -139,6 +140,13 @@ function movePlayer() {
 function levelWin() {
     console.log('Subiste de nivel!');
     level++;
+    startGame();
+};
+
+function levelFail() {
+    console.log('Chocaste con un elemento :(');
+    playerPosition.x = undefined;
+    playerPosition.y = undefined;
     startGame();
 };
 
