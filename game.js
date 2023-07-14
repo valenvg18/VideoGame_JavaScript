@@ -7,6 +7,7 @@ const btnDown = document.querySelector('#down');
 
 let canvasSize;
 let elementSize;
+let level = 0;
 
 const playerPosition = {
     x: undefined,
@@ -49,7 +50,14 @@ function startGame() {
     game.textAlign = 'end';
 
     //Niveles
-    const map = maps[0];
+    const map = maps[level];
+
+    if (!map) {
+        gameWin();
+        // Para no volver a renderizar el mapa, porque ya termino el juego.
+        return;
+    }
+
     //crear un arreglo para cada vez que se encuentre un salto de linea
     //Arreglo de filas a partir de un string
     const mapRows = map.trim().split('\n');
@@ -57,10 +65,10 @@ function startGame() {
     const mapColumns = mapRows.map(row => row.trim().split(''));
     console.log({map, mapRows, mapColumns});
 
+    enemyPositions = [];
+
     //Debemos borrar todo antes de renderizar todo el juego y los movimientos del jugador, ya que con canvas no hay otra forma
     game.clearRect(0, 0, canvasSize, canvasSize);
-
-    enemyPositions = [];
 
     //RECORRER ARRAY BIDIMENSIONAL
     mapColumns.forEach((row, rowI) => {
@@ -92,7 +100,7 @@ function startGame() {
 
             game.fillText(emoji, posX, posY)
             // console.log({ row, rowI, col, colI});
-        })
+        });
     });
 
     //Para renderizar nuestro emoji de jugador
@@ -104,13 +112,15 @@ function startGame() {
 }
 
 function movePlayer() {
-    const giftColisionX = playerPosition.x == giftPosition.x;
-    const giftColisionY = playerPosition.y == giftPosition.y;
+    const giftColisionX = playerPosition.x.toFixed(3) == giftPosition.x.toFixed(3);
+    const giftColisionY = playerPosition.y.toFixed(3) == giftPosition.y.toFixed(3);
     //Si hubo colision significa que ambas variables, o sea giftColision en X y Y, son true.
     const giftColision = giftColisionX  && giftColisionY;
+    
 
     if (giftColision) {
-        console.log('Subiste de nivel!');
+        // console.log('Subiste de nivel!');
+        levelWin();
     };
 
     const enemyColision = enemyPositions.find(enemy => {
@@ -124,6 +134,16 @@ function movePlayer() {
     };
 
     game.fillText(emojis['PLAYER'], playerPosition.x, playerPosition.y);
+}
+
+function levelWin() {
+    console.log('Subiste de nivel!');
+    level++;
+    startGame();
+};
+
+function gameWin() {
+    console.log('Terminaste el juego!');
 }
 
 window.addEventListener('keydown', moveByKeys);
@@ -153,7 +173,7 @@ function moveUp() {
 
     if ((playerPosition.y - elementSize) < elementSize) {
         console.log('OUT');
-    }else {
+    } else {
         //Si miramos en la consola vemos que si "se mueve", ya que si llamamos a playerPosition, cambia su posicion en y
         playerPosition.y -= elementSize;
         // Hay que volver a renderizar todo el juego
