@@ -43,12 +43,17 @@ function setCanvasSize() {
         canvasSize = window.innerHeight * 0.8;
     }
 
+    //Para reducir la probabilidad de error en los diferentes tamanos de pantalla
+    canvasSize = Number(canvasSize.toFixed(0));
+
     canvas.setAttribute('width', canvasSize);
     canvas.setAttribute('height', canvasSize);
 
     //ELEMENTOS DENTRO DEL CANVAS
     elementSize = canvasSize / 10;
 
+    playerPosition.x = undefined;
+    playerPosition.y = undefined;
     startGame();
 }
 
