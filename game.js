@@ -6,6 +6,8 @@ const btnRight = document.querySelector('#right');
 const btnDown = document.querySelector('#down');
 const spanLives = document.querySelector('#lives');
 const spanTime = document.querySelector('#time');
+const spanRecord = document.querySelector('#record');
+const pResult = document.querySelector('#result');
 
 let canvasSize;
 let elementSize;
@@ -70,6 +72,7 @@ function startGame() {
         timeStart = Date.now();
         //Si no hay un timeStart, es porque el juego apenas empezo
         timeInterval = setInterval(showTime, 100);
+        showRecord();
     }
 
     //crear un arreglo para cada vez que se encuentre un salto de linea
@@ -178,8 +181,24 @@ function levelFail() {
 
 function gameWin() {
     console.log('Terminaste el juego!');
-
     clearInterval(timeInterval);
+
+    const recordTime = localStorage.getItem('record_time');
+    const playerTime = Date.now() - timeStart;
+
+    if (recordTime) {
+        if (recordTime >= playerTime) {
+            localStorage.setItem('record_time', playerTime);
+            pResult.innerHTML = 'SUPERASTE EL RECORD';
+        } else {
+            pResult.innerHTML = 'Lo siento, no superaste el record';
+        }
+    } else {
+        localStorage.setItem('record_time', playerTime);
+        pResult.innerHTML = 'Primera vez? Muy bien, pero trata de superar tu tiempo!';
+    }
+
+    console.log({recordTime, playerTime});
 }
 
 function showLives() {
@@ -197,8 +216,11 @@ function showTime() {
     spanTime.innerHTML = Date.now() - timeStart;
 }
 
-window.addEventListener('keydown', moveByKeys);
+function showRecord() {
+    spanRecord.innerHTML = localStorage.getItem('record_time');
+}
 
+window.addEventListener('keydown', moveByKeys);
 btnUp.addEventListener('click', moveUp);
 btnLeft.addEventListener('click', moveLeft);
 btnRight.addEventListener('click', moveRight);
