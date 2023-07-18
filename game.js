@@ -5,11 +5,17 @@ const btnLeft = document.querySelector('#left');
 const btnRight = document.querySelector('#right');
 const btnDown = document.querySelector('#down');
 const spanLives = document.querySelector('#lives');
+const spanTime = document.querySelector('#time');
 
 let canvasSize;
 let elementSize;
 let level = 0;
 let lives = 3;
+
+let timeStart;
+let timePlayer;
+let timeInterval;
+
 
 const playerPosition = {
     x: undefined,
@@ -58,6 +64,12 @@ function startGame() {
         gameWin();
         // Para no volver a renderizar el mapa, porque ya termino el juego.
         return;
+    }
+
+    if (!timeStart) {
+        timeStart = Date.now();
+        //Si no hay un timeStart, es porque el juego apenas empezo
+        timeInterval = setInterval(showTime, 100);
     }
 
     //crear un arreglo para cada vez que se encuentre un salto de linea
@@ -156,6 +168,7 @@ function levelFail() {
     if (lives <= 0) {
         level = 0;
         lives = 3;
+        timeStart = undefined;
     };
 
     playerPosition.x = undefined;
@@ -165,6 +178,8 @@ function levelFail() {
 
 function gameWin() {
     console.log('Terminaste el juego!');
+
+    clearInterval(timeInterval);
 }
 
 function showLives() {
@@ -176,6 +191,10 @@ function showLives() {
     /* spanLives.innerHTML = "";
     heartsArray.forEach(heart => spanLives.append(heart)); */
 
+}
+
+function showTime() {
+    spanTime.innerHTML = Date.now() - timeStart;
 }
 
 window.addEventListener('keydown', moveByKeys);
